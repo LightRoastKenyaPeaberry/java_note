@@ -1,4 +1,4 @@
-# java_45days_by_韩顺平
+# java 45days by 韩顺平
 
 ## 第一阶段-java基础
 
@@ -171,3 +171,385 @@ byte -> short -> int -> long -> float -> double
 - basic --> string 将基本类型的值 + "" 即可
 - string --> basic 调用基本类型的`包装类`的parseXX方法
 
+```java
+public class StringToBasic {
+    public static void main(String[] args) {
+        //  basic to string 
+        int a = 100;
+        float b = 1.1F;
+        double c = 8.1;
+        boolean d = true; 
+        String s1 = a + "";
+        String s2 = b + "";
+        String s3 = c + "";
+        String s4 = d + "";
+        System.out.println(s1);
+        System.out.println(s2);
+        System.out.println(s3);
+        System.out.println(s4);
+
+        // string to basic 
+        String s5 = "123";
+        int num1 = Integer.parseInt(s5);
+        System.out.println(num1);
+        double num2 = Double.parseDouble(s5);
+        System.out.println(num2);
+        float num3 = Float.parseFloat(s5);
+        System.out.println(num3);
+        long num4 = Long.parseLong(s5);
+        System.out.println(num4);
+        short num5 = Short.parseShort(s5);
+        System.out.println(num5);
+        byte num6 = Byte.parseByte(s5);
+        System.out.println(num6);
+        boolean num7 = Boolean.parseBoolean("true");
+        System.out.println(num7);
+        // 将字符串的第几个字符转换为char
+        char ch = s5.charAt(2);
+        System.out.println(ch);
+    }
+}
+
+```
+
+
+
+
+
+### 运算符
+
+在java中, % 的本质是 `a % b = a - a / b * b` 注意这里的 a/b是直接去掉小数部分的(也就是直接取整)
+
+ps : **python的的余数是按照整除（向下取整）得到的商来计算的。**
+
+
+
+```java
+int i =1;
+i = i++; 
+System.out.println(i); 
+// 1 
+// 1. temp =i; 2. i++; 3. i = temp
+
+int i = 1;
+i = ++i;
+System.out.println(i);
+// 2 
+// 1. temp = ++i; 2. i = temp
+```
+
+```java
+"233" instanceof String
+```
+
+| a     | b     | a&b   | a&&b  | a\|b  | a\|\|b | !a    | a^b   |
+| ----- | ----- | ----- | ----- | ----- | ------ | ----- | ----- |
+| true  | true  | true  | true  | true  | true   | false | false |
+| true  | false | flase | false | true  | true   | false | true  |
+| false | true  | false | false | true  | true   | true  | true  |
+| false | false | false | false | false | false  | true  | false |
+
+
+
+- 短路与&& 和逻辑与&
+  - &&当第一个为假,后面不用判断了
+  - &始终要全部判断
+  - &&效率高
+- 短路或|| 和 逻辑或|
+  - || 当第一个为真,后面不用判断
+  - | 始终要全部判断
+  - ||效率高
+
+
+
+复合赋值运算符 
+
++=
+
+-+ 
+
+*=
+
+/=
+
+%=
+
+**存在类型(强制)转换**
+
+#### 三元运算符
+
+条件表达式? 表达式1:表达式2 
+
+条件为真, 结果取1; 反之取2
+
+
+
+**细节**
+
+1. 表达式1和2 要为可以赋给接受变量的类型(或者可以自动转换)
+2. 三元运算符可以转换为if else
+
+
+
+#### 运算优先级 
+
+1. 下表,优先级从高到底.
+2. 只有单目运算符 和 赋值运算符是从右到左的.
+
+|      | . () {} ; ,                    |
+| ---- | ------------------------------ |
+| R->L | ++  --  ~    !(data type)      |
+| L->R | * / %                          |
+| L->R | +   -                          |
+| L->R | <<    >>    >>>    位移        |
+| L->R | <   >   <=    >=    instanceof |
+| L->R | !=     ==                      |
+| L->R | &                              |
+| L->R | ^                              |
+| L->R | \|                             |
+| L->R | &&                             |
+| L->R | II                             |
+| L->R | ？:                            |
+| R->L | =   *=  /=   %=                |
+|      | +=   -=  <<=    >>=            |
+|      | >>>=   &=   ^=   \|=           |
+
+
+
+#### 标识符命名规则
+
+1. 26个大小写字母,数字,  下划线_ , $ 
+2. 不可以数字开头
+3. 不可以使用关键字和保留字
+4. 区分大小写.
+5. 不能包含空格
+
+#### 命名规范
+
+标识符命名规范
+
+1. 包名：多单词组成时所有字母都小写：aaa.bbb.ccc
+   比如com.hsp.crm
+2. 类名、接口名：多单词组成时，所有单词的首字母大写：XXxYyyZzz
+   比如：TankShotGame  `大驼峰`
+3. 变量名、方法名：多单词组成时，第一个单词首字母小写，第二个单词开始每个单词首字母大写：xxYyyZzz
+   比如：tankShotGame `小驼峰`
+4. 常量名：所有字母都大写。多单词时每个单词用下划线连接：XXX_YYY_ZZZ
+   比如：定义一个所得税率TAX_RATE 
+5. 后面我们学习到类，包，接口，等时，我们的命名规范要这样遵守，更加详细的看文档.
+
+
+
+###  进制
+
+对于整数，有四种表示方式：
+
+1. 二进制：0,1，满2进1.以0b或0B开头。
+2. 十进制：0-9，满10进1。
+3. 八进制：0-7，满8进1,以数字0开头表示。
+4. 十六进制：0-9及A(10)-F(15),满16进1.以0x或0X开头表示。此处的A-F不区分大小写。
+
+#### 位运算 
+
+`计算用补码`
+
+`看计算结果用原码`
+
+| 符号 | 意义     |
+| ---- | -------- |
+| >>   | 位右移   |
+| <<   | 位左移   |
+| >>>  | 算数右移 |
+| ~    | 按位取反 |
+| &    | 按位与   |
+| \|   | 按位或   |
+| ^    | 按位异或 |
+
+
+
+\>> 低位溢出,用符号位补高位.
+
+<< 符号位不变,低位补0
+
+\>>>无符号右移,低位溢出,高位补0
+
+没有<<<这个东西.
+
+m\>>n,本质上就是$m/2^n$
+
+m<<n,本质上是$m*2^n$
+
+
+
+### 顺序控制
+
+```java
+if () {
+  
+}
+else if () {
+  
+}
+else {
+  
+}
+```
+
+```java
+// 歌手比赛, 成绩大于8进入决赛,否则淘汰, 并根据性别提示进入男子组/女子组.
+import java.util.Scanner;
+public class If02 {
+    public static void main(String[] args) {
+        
+        Scanner myScanner = new Scanner(System.in);
+        System.out.println("请输入你的成绩:");
+        double score = myScanner.nextDouble();
+        if (score < 0 || score > 10){
+            System.out.println("成绩范围有误,必须要在0-10之间.");
+        }
+        else {
+            if (score > 8.0) {
+                System.out.println("请输入你的性别:");
+              	// 接收字符的方法就是先接收字符串, 接着取其第0位.
+                char gender = myScanner.next().charAt(0);
+                if (gender == '男') {
+                    System.out.println("进入男子决赛组.");
+                }
+                else if (gender == '女') {
+                    System.out.println("进入女子决赛组.");    
+                }
+                else {
+                    System.out.println("进入无性别组.");
+                }
+            }
+            else {
+                System.out.println("你被淘汰了.");
+            }
+        }           
+    }
+}
+
+```
+
+```java
+// switch 
+switch(expr) {
+  case 常量1:
+    code ...;
+    break;
+  case 常量2:
+    code ...;
+    break;
+  default:
+    code...;
+    // break;
+}
+
+```
+
+**switch有穿透的现象**
+
+即: 假如某个case里没有写break, 将当前case里的代码执行后,会直接跳进它下一个case里.
+
+**switch细节**
+
+1. 表达式数据类型，应和case后的常量类型一致，或者能`自动转成`可以相互比较的类型，比如输入的是字符，而常量是int
+2. switch(表达式)中表达式的返回值必须是：(byte,short,int,char,enum,`String`)[注意不在switch语句里,String判断相等的方法.]
+3. case子句中的值必须是常量，而不能是变量
+4. default子句是可选的，当没有匹配的case时，执行default
+5. break语句用来在执行完一个case分支后使程序跳出switch语句块；如果没有写break,程序会顺序执行到switch结尾
+
+```java
+// 穿透的一个例子
+int month = myScanner.nextInt();
+switch(month) {
+  case 3:
+  case 4: 
+  case 5: 
+    System.out.println("spring");
+    break;
+  case 6: 
+  case 7: 
+  case 8: 
+    System.out.println("Summer");
+    break;
+ //  ...
+    
+}
+```
+
+
+
+### 循环控制
+
+```java
+for(循环变量初始化;循环条件;循环变量迭代) {
+  循环操作;
+}
+```
+
+**细节**
+
+1. 循环条件是返回一个布尔值的表达式
+
+2. for(循环判断条件)中的初始化和变量迭代可以写到其它地方，但是两边的分号不能省略 
+   ```java
+   for(;循环条件;) {
+   
+   }
+   ```
+
+   
+
+3. 循环初始值可以有多条初始化语句，但要求类型一样，并且中间用逗号隔开，循环变量迭代也可以有多条变量迭代语句，中间用逗号隔开。
+
+---
+
+```java
+循环变量初始化;
+while(循环条件) {
+  循环体;
+  循环变量迭代;
+}
+```
+
+**细节**
+
+1. 循环条件是返回一个布尔值的表达式
+2. while是先判断再执行.
+
+---
+
+```java
+循环变量初始化;
+do {
+  循环体;
+  循环变量迭代;
+}while(循环条件);
+```
+
+1. 先执行,再判断. 总会执行1次
+2. 最后有一个分号.
+
+---
+
+ break可以通过指定label来明确终止的是哪一层循环. 没指定就跳出最近的一个循环.
+
+```java
+label1: 
+for (int j =0; j < 4; j++) {
+  label2:
+  for (int i =0; i < 10; i++) {
+    if (i == 2) {
+      break label1;
+    }
+    System.out.println("i = " + i);
+  }  
+}
+```
+
+ps: 只要是在循环前写`xx: `, 就可以确定它是个标签.
+
+`在实际开发中,不建议使用标签.`
+
+continue 也可以带标签
