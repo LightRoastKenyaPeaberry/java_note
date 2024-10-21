@@ -3194,45 +3194,121 @@ end
 
 
 
+### 使用runable接口
+
+ ```java
+public class Thread02 {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+//        d.run();  这里不能调用run方法, 不然就是在主线程里进行
+        Thread thread = new Thread(d);
+        thread.start();
+
+    }
+}
+
+class Dog implements Runnable {
+    int count = 0;
+
+    @Override
+    public void run() {
+        while (count < 10) {
+            System.out.println("bark bark bark\t"+(++count)+Thread.currentThread().getName());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+}
+ ```
+
+底层使用了设计模式[(静态)代理模式]
+
+1. 从java的设计来看，通过继承Thread或者实现Runnable接口来创建线程本质上没有区别，从jdk帮助文档我们可以看到Thread类本身就实现了Runnable接口
+   start()->start0()
+2. 实现Runnable:接口方式更加适合多个线程共享一个资源的情况，并且避免了单继承的限制
+
+**e.g. 三个窗口售票** 超售问题
+
+**线程终止**
+
+1. 线程任务完成,自动退出
+2. 通过使用变量控制run方法退出, 就停止了线程, [通知方式]
+
+**线程常用方法**
+
+1. setName/设置线程名称，使之与参数name相同
+2. getName/返回该线程的名称
+3. start/使该线程开始执行；Java虚拟机底层调用该线程的start0方法
+4. run/调用线程对象run方法；
+5. setPriority/更改线程的优先级
+6. getPriority/获取线程的优先级
+7. sleep/在指定的毫秒数内让当前正在执行的线程休眠（暂停执行）
+8. interrupt/中断线程
+9. yield:线程的礼让。让出cpu,让其他线程执行，但礼让的时间不确定，所以也不一定礼让成功
+   Thread.yield() 在哪用, 哪个就礼让.
+10. join:线程的插队。插队的线程一旦插队成功，则肯定先执行完插入的线程所有的任务
+    t.join(), 谁调用, 就是谁先来.
 
 
 
 
 
+1. start底层会创建新的线程，调用run, run就是一个简单的方法调用，不会启动新线程
+2. 线程优先级的范围 [1-10 MIN NORM MAX]
+3. interrupt,中断线程，但并没有真正的结束线程。所以一般用于中断正在休眠线程
 
 
 
+**用户线程和守护线程**
+
+1. 用户线程：也叫工作线程，当线程的任务执行完或通知方式结束
+2. 守护线程：一般是为工作线程服务的，当所有的用户线程结束，守护线程自动结束
+   setDeamon(true);
+3. 常见的守护线程：垃圾回收机制
 
 
 
+**线程生命周期**
+
+- NEW 
+- RUNNABLE (READY   RUNNING) 
+- BLOCKED
+- WAITING
+- TIMEDWAITING
+- TERMINATED
 
 
 
+**synchronized**
 
+线程同步机制
 
+1. 在多线程编程, 一些敏感数据不允许被多个线程同时访问, 此时就使用同步访问技术, 保证数据在任何同一时刻, 最多只有一个线程访问, 以保证数据的完整性.
+2. 线程同步, 即当有一个线程在对内存进行操作时, 其他线程不可以对这个内存地址进行操作, 直到该线程完成操作, 其他线程才可以对该内存地址进行操作.
 
+具体方法
 
+1. 同步代码块
 
+   ```java
+   synchronized (对象) { //得到对象的锁, 才能操作同步代码
+     // 同步代码;
+   }  
+   ```
 
+2. 放在方法声明中, 表示整个方法都是同步的.
 
+   ```java
+   public synchronized void m(String name) {
+     // 同步代码;
+   }  
+   ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<font color='crimson'>注意:</font> 售票的demo可以用synchronized解决, 但是, 仅针对实现了`Runnable`接口的类, 如果是继承了`Thread`的类, 会发现在加了这个关键字后超售的问题并没有解决.
 
 
 
