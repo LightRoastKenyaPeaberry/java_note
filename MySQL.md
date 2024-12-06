@@ -145,7 +145,7 @@ ADD (column datatype [DEFAULT expr]
 [, column datatype]...);
 
 
--- 修改列
+-- 修改列 类型
 ALTER TABLE tablename
 MODIFY (column datatype [DEFAULT expr]
 [, column datatype]...);
@@ -154,7 +154,7 @@ MODIFY (column datatype [DEFAULT expr]
 ALTER TABLE tablename
 DROP (column);
 
--- 修改列名, 注意这里的datatype必须加上, 不管数据类型是改了还是没改
+-- 修改列名和类型. 注意这里的datatype必须加上, 不管数据类型是改了还是没改
 ALTER TABLE tablename
 CHANGE COLUMN oldname newname datatype;
 
@@ -218,15 +218,15 @@ SELECT columnname as 别名 from 表名；
 
 **select 子句**
 
-| 比较运算符 | >  >=  <  <=  =  <> !=        |                                       |
-| ---------- | ----------------------------- | ------------------------------------- |
-|            | BETWEEN...AND...              | 显示在某一区间的值 [m, n]             |
-|            | IN(set)                       | 显示在in列表中的值，例：in（100,200） |
-|            | LIKE  '张%' <br /> NOTLIKE '' | 模糊查询: % 0-n个字符.   _ 1个字符    |
-|            | IS NULL                       | 判断是否为空                          |
-| 逻辑运算符 | and                           | 多个条件同时成立                      |
-|            | or                            | 多个条件任一成立                      |
-|            | not                           | 不成立，例：where not（salary>100);   |
+| 比较运算符 | >  >=  <  <=  =  <> !=            |                                       |
+| ---------- | --------------------------------- | ------------------------------------- |
+|            | BETWEEN...AND...                  | 显示在某一区间的值 [m, n]             |
+|            | IN(set)                           | 显示在in列表中的值，例：in（100,200） |
+|            | LIKE  '张%' <br /> NOT LIKE '张_' | 模糊查询: % 0-n个字符.   _ 1个字符    |
+|            | IS NULL                           | 判断是否为空                          |
+| 逻辑运算符 | and                               | 多个条件同时成立                      |
+|            | or                                | 多个条件任一成立                      |
+|            | not                               | 不成立，例：where not（salary>100);   |
 
 
 
@@ -443,6 +443,36 @@ SELECT A.ename as employee, B.ename as supervisor from emp as A, emp as B WHERE 
 
 
 
+黑马介绍
+
+- 标量子查询
+
+  - 子查询返回的结果是单个值（数字、字符串、日期等），最简单的形式
+  - 常用的操作符：= < > >= <=
+
+- 列子查询
+
+  - 子查询返回的结果是一列（可以是多行）
+  - 常用的操作符：in、not in等
+
+- 行子查询
+
+  - 子查询返回的结果是一行（可以是多列）
+
+  - 常用的操作符：=、<>、in、not in
+    ```mysql
+    select * from emp where (entrydata,job) = (select entrydate, job from emp where id =1);
+    ```
+
+    
+
+- 表子查询
+
+  - 子查询返回的结果是多行多列，常作为临时表
+  - 常用的操作符：in
+
+
+
 ### 子查询作为临时表
 
 ​      
@@ -600,7 +630,13 @@ FOREIGN KEY (本表字段名) REFERENCES
 4. 外键字段的值，必须在主键字段中出现过，或者为null[前提是外键字段允许为null]
 5. 一旦建立主外键的系，数据不能随意删除了
 
+缺点 (物理外键):
 
+1. 影响增、删、改的效率（需要检查外键关系）。
+2. 仅用于单节点数据库，不适用与分布式、集群场景。
+3. 容易引发数据库的死锁问题，消耗性能。
+
+所以, 推荐使用逻辑外键
 
 - check
 
@@ -714,6 +750,10 @@ desc table_name;
 4. 不会出现在WHERE子句中字段不该创建索引
 
 
+
+mysql使用的是B+ Tree
+
+![image-20241130225500073](./MySQL.assets/image-20241130225500073.png)
 
 
 

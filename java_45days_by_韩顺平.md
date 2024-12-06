@@ -2193,7 +2193,7 @@ E.g.  创建Season对象有如下特点
 
 **元注解**
 
-1) Retention/指定注解的作用范围，三种SOURCE,CLASS,.RUNTIME
+1) Retention/指定注解的作用范围，三种SOURCE,CLASS,RUNTIME
 2) Target/指定注解可以在哪些地方使用
 3) Documented/指定该注解是否会在javadoc体现
 4) Inherited/子类会继承父类注解
