@@ -1397,7 +1397,7 @@ public class SessionController {
 
 位置：业务(service)层的方法上、类上、接口上
 
-作用：将当前方法交给spig进行事务管理，方法执行前，开启事务；成功执行完毕，提交事务；出现异常，回滚事务
+作用：将当前方法交给spring进行事务管理，方法执行前，开启事务；成功执行完毕，提交事务；出现异常，回滚事务
 
 ```yaml
 # applicaiton.yaml
